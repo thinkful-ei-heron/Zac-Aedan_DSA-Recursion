@@ -7,9 +7,9 @@ function countSheep(sheep) {
 	if (sheep === 0) console.log('All sheep jumped over the fence');
 	else {
 		console.log(`${sheep}: Another sheep jumps over the fence`);
-		countSheep(sheep-1);
+		countSheep(sheep - 1);
 	}
-	
+
 }
 
 // countSheep(3);
@@ -23,7 +23,7 @@ function countSheep(sheep) {
 function powerCalc(base, exp) {
 	if (exp < 0) return 'exponent should be >= 0';
 	if (exp === 0) return 1;
-	return base*powerCalc(base, exp-1);
+	return base * powerCalc(base, exp - 1);
 }
 
 // console.log(powerCalc(10,2));
@@ -36,7 +36,7 @@ function powerCalc(base, exp) {
 // Call output: Single character
 function revString(str) {
 	if (str.length === 1) return str;
-	return str[str.length-1] + revString(str.slice(0, str.length-1));
+	return str[str.length - 1] + revString(str.slice(0, str.length - 1));
 }
 
 // console.log(revString('pizza?'));
@@ -61,12 +61,12 @@ function triNum(num) {
 // Call input: Remaining string
 // Call output: Array
 function strSplitter(str) {
-	if (!str.length) return [];
-	if (str[0] === '/') return [str.slice(1)];
-	return [strSplitter(str.slice(1))];
+	const cut = str.indexOf('/');
+	if (cut === -1) return [str];
+	return [str.slice(0, cut), ...strSplitter(str.slice(cut + 1))];
 }
 
-console.log(strSplitter('02/20/2020'));
+// console.log(strSplitter('02/20/2020'));
 
 
 // 6. Fibonacci
@@ -74,10 +74,10 @@ console.log(strSplitter('02/20/2020'));
 // Program output: Fibonacci sequence
 // Call input: Integer
 // Call output: Display iteration
-function fib(count, numA=1, numB=1) {
+function fib(count, numA = 1, numB = 1) {
 	console.log(numA);
 	if (count === 1) return numA + numB;
-	fib(count-1, numB, numA + numB);
+	fib(count - 1, numB, numA + numB);
 }
 
 // console.log(fib(7));
@@ -90,10 +90,197 @@ function fib(count, numA=1, numB=1) {
 // Call output: Factorial of input
 function fact(num) {
 	if (num === 1) return 1;
-	return num*fact(num-1);
+	return num * fact(num - 1);
 }
 
 // console.log(fact(5));
+
+
+// 8. Find a way out of the maze
+// Program input: Array of arrays
+// Program output: String of characters representing direction
+// Call input: Array
+// Call output: String
+let mySmallMaze = [
+	[' ', ' ', ' '],
+	[' ', '*', ' '],
+	[' ', ' ', 'e']
+];
+let maze = [
+	[' ', ' ', ' ', '*', ' ', ' ', ' '],
+	['*', '*', ' ', '*', ' ', '*', ' '],
+	[' ', ' ', ' ', ' ', ' ', ' ', ' '],
+	[' ', '*', '*', '*', '*', '*', ' '],
+	[' ', ' ', ' ', ' ', ' ', ' ', 'e']
+];
+
+function wayOut(arr, x = 0, y = 0, path = '', direction = '', place = 0) {
+	console.log(`At ${x}, ${y}`);
+	if (
+		x < 0 || y < 0
+		|| x > arr[0].length - 1 || y > arr.length - 1
+		|| arr[y][x] === '*'
+	) return;
+
+	if (arr[y][x] === 'e') {
+		console.log('exit!')
+		return path;
+	}
+
+	path[place] - direction;
+	place++;
+
+	if (arr[y][x] === ' ') {
+		arr[y][x] = '*';
+
+		// Check left
+		wayOut(arr, y, x - 1, path, 'L', place);
+		// Check right
+		wayOut(arr, y, x + 1, path, 'R', place);
+		// Check up
+		wayOut(arr, y - 1, x, path, 'U', place);
+		// Check down
+		wayOut(arr, y + 1, x, path, 'D', place);
+	}
+
+	place--;
+
+	// const checkCell = (x, y) => {
+	// 	if (
+	// 		x < 0
+	// 		|| x > arr[0].length - 1
+	// 		|| y < 0
+	// 		|| y > arr.length - 1
+	// 		|| arr[y][x] === '*'
+	// 	)return false;
+	// 	return true;
+	// }
+
+	// // Check to move right
+	// if (checkCell(x + 1, y)) {
+	// 	arr[y][x] = '*';
+	// 	path += 'R';
+	// 	console.log(path);
+	// 	return wayOut(arr, ++x, y, path);
+	// }
+	// // Check to move down
+	// else if (checkCell(x, y + 1)) {
+	// 	arr[y][x] = '*';
+	// 	path += 'D';
+	// 	console.log(path);
+	// 	return wayOut(arr, x, ++y, path);
+	// }
+	// // Check to move left
+	// else if (checkCell(x - 1, y)) {
+	// 	arr[y][x] = '*';
+	// 	path += 'L';
+	// 	console.log(path);
+	// 	return wayOut(arr, --x, y, path);
+	// }
+	// // Check to move up
+	// else if (checkCell(x, y - 1)) {
+	// 	arr[y][x] = '*';
+	// 	path += 'U';
+	// 	console.log(path);
+	// 	return wayOut(arr, x, --y, path);
+	// }
+}
+
+console.log(wayOut(mySmallMaze));
+
+
+// 9. Find ALL the ways out of the maze
+// Program input: Array of arrays
+// Program output: List of strings of characters representing direction
+// Call input: Array
+// Call output: String
+
+
+
+
+// 10: Anagrams
+// Program input: String
+// Program output: Array of strings
+// Call input: String
+// Call output: Single character
+function anagrams(str, prefix = '') {
+	if (str.length = 1) return console.log(prefix + str);
+	for (let i = 0; i < str.length; i++) {
+		anagrams(
+			str.substring(0, i) + str.substring(i + 1),
+			prefix + str.substring(i, i + 1)
+		);
+	}
+}
+
+console.log(anagrams('east'))
+
+
+// 11. Organization Chart
+// Program input: Object
+// Program output: Indented readout
+// Call input: Object
+// Call output: Value of key
+const chart = {
+	Zuckerberg: {
+		Schroepfer: {
+			Bosworth: {
+				Steve: {},
+				Kyle: {},
+				Andra: {}
+			},
+			Zhao: {
+				Richie: {},
+				Sofia: {},
+				Jen: {}
+			}
+		},
+		Schrage: {
+			VanDyck: {
+				Sabrina: {},
+				Michelle: {},
+				Josh: {}
+			},
+			Swain: {
+				Blanch: {},
+				Tom: {},
+				Joe: {}
+			}
+		},
+		Sandberg: {
+			Goler: {
+				Eddie: {},
+				Julie: {},
+				Annie: {}
+			},
+			Hernandez: {
+				Rowi: {},
+				Inga: {},
+				Morgan: {}
+			},
+			Moissinac: {
+				Amy: {},
+				Chuck: {},
+				Vinni: {}
+			},
+			Kelley: {
+				Eric: {},
+				Ana: {},
+				Wes: {},
+			}
+		}
+	}
+}
+
+function orgChart(obj, layer = 0) {
+	let tab = '\t'.repeat(layer);
+	Object.keys(obj).forEach(key => {
+		console.log(tab + key);
+		orgChart(obj[key], layer + 1)
+	});
+}
+
+// orgChart(chart);
 
 
 // 12. Binary Representation
@@ -101,10 +288,14 @@ function fact(num) {
 // Program output: Binary representation of input
 // Call input: Integer remaining
 // Call output: Bit representation
-function binaryRep(num) {
-	if (num === 0) return '';
-	const mod = num % 2;
-	return binaryRep((num - mod) / 2) + `${mod}`;
+function binary(num) {
+	const binaryRep = (num) => {
+		if (num === 0) return '';
+		const mod = num % 2;
+		return binaryRep((num - mod) / 2) + `${mod}`;
+	}
+	if (num === 0) return '0';
+	return binaryRep(num);
 }
 
-console.log(binaryRep(0));
+// console.log(binary(25));
