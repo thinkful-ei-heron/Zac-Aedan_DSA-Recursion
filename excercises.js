@@ -114,79 +114,41 @@ let maze = [
 	[' ', ' ', ' ', ' ', ' ', ' ', 'e']
 ];
 
-function wayOut(arr, x = 0, y = 0, path = '', direction = '', place = 0) {
-	console.log(`At ${x}, ${y}`);
+let escape = false;
+function wayOut(arr, x = 0, y = 0, path = [], direction = '', place = 0) {
+	if (escape) return;
+	// Check bounds
 	if (
 		x < 0 || y < 0
 		|| x > arr[0].length - 1 || y > arr.length - 1
 		|| arr[y][x] === '*'
 	) return;
 
-	if (arr[y][x] === 'e') {
-		console.log('exit!')
-		return path;
-	}
-
-	path[place] - direction;
+	path[place] = direction;
 	place++;
+
+	if (arr[y][x] === 'e') {
+		escape = true;
+		console.log(path.slice(1));
+	}
 
 	if (arr[y][x] === ' ') {
 		arr[y][x] = '*';
 
 		// Check left
-		wayOut(arr, y, x - 1, path, 'L', place);
+		wayOut(arr, x - 1, y, path, 'L', place);
 		// Check right
-		wayOut(arr, y, x + 1, path, 'R', place);
+		wayOut(arr, x + 1, y, path, 'R', place);
 		// Check up
-		wayOut(arr, y - 1, x, path, 'U', place);
+		wayOut(arr, x, y - 1, path, 'U', place);
 		// Check down
-		wayOut(arr, y + 1, x, path, 'D', place);
+		wayOut(arr, x, y + 1, path, 'D', place);
 	}
 
 	place--;
-
-	// const checkCell = (x, y) => {
-	// 	if (
-	// 		x < 0
-	// 		|| x > arr[0].length - 1
-	// 		|| y < 0
-	// 		|| y > arr.length - 1
-	// 		|| arr[y][x] === '*'
-	// 	)return false;
-	// 	return true;
-	// }
-
-	// // Check to move right
-	// if (checkCell(x + 1, y)) {
-	// 	arr[y][x] = '*';
-	// 	path += 'R';
-	// 	console.log(path);
-	// 	return wayOut(arr, ++x, y, path);
-	// }
-	// // Check to move down
-	// else if (checkCell(x, y + 1)) {
-	// 	arr[y][x] = '*';
-	// 	path += 'D';
-	// 	console.log(path);
-	// 	return wayOut(arr, x, ++y, path);
-	// }
-	// // Check to move left
-	// else if (checkCell(x - 1, y)) {
-	// 	arr[y][x] = '*';
-	// 	path += 'L';
-	// 	console.log(path);
-	// 	return wayOut(arr, --x, y, path);
-	// }
-	// // Check to move up
-	// else if (checkCell(x, y - 1)) {
-	// 	arr[y][x] = '*';
-	// 	path += 'U';
-	// 	console.log(path);
-	// 	return wayOut(arr, x, --y, path);
-	// }
 }
 
-console.log(wayOut(mySmallMaze));
+// wayOut(maze);
 
 
 // 9. Find ALL the ways out of the maze
@@ -194,8 +156,40 @@ console.log(wayOut(mySmallMaze));
 // Program output: List of strings of characters representing direction
 // Call input: Array
 // Call output: String
+function allWaysOut(arr, x = 0, y = 0, path = [], direction = '', place = 0) {
+	// Check bounds
+	if (
+		x < 0 || y < 0
+		|| x > arr[0].length - 1 || y > arr.length - 1
+		|| arr[y][x] === '*'
+	) return;
 
+	path[place] = direction;
+	place++;
 
+	if (arr[y][x] === 'e') {
+		console.log(`Path to the exit: ${path.slice(1)}`);
+	}
+
+	if (arr[y][x] === ' ') {
+		arr[y][x] = '*';
+
+		// Check left
+		allWaysOut(arr, x - 1, y, path, 'L', place);
+		// Check right
+		allWaysOut(arr, x + 1, y, path, 'R', place);
+		// Check up
+		allWaysOut(arr, x, y - 1, path, 'U', place);
+		// Check down
+		allWaysOut(arr, x, y + 1, path, 'D', place);
+
+		arr[y][x] = ' ';
+	}
+
+	place--;
+}
+
+// allWaysOut(maze);
 
 
 // 10: Anagrams
@@ -203,8 +197,10 @@ console.log(wayOut(mySmallMaze));
 // Program output: Array of strings
 // Call input: String
 // Call output: Single character
+const anaList = [];
+
 function anagrams(str, prefix = '') {
-	if (str.length = 1) return console.log(prefix + str);
+	if (str.length === 1) anaList.push(prefix + str);
 	for (let i = 0; i < str.length; i++) {
 		anagrams(
 			str.substring(0, i) + str.substring(i + 1),
@@ -213,7 +209,8 @@ function anagrams(str, prefix = '') {
 	}
 }
 
-console.log(anagrams('east'))
+anagrams('east');
+// console.log(`${anaList.length} anagrams: ${anaList}`);
 
 
 // 11. Organization Chart
